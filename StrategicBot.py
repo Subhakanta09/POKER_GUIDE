@@ -1,9 +1,6 @@
 from pypokerengine.utils.card_utils import Card
+from bots.base import CountingBot
 class StrategicBot(CountingBot):
-
-    def __init__(self):
-        super().__init__("StrategicBot")
-
     def declare_action(self, valid_actions, hole_card, round_state):
         # Get community cards
         community_cards = round_state["community_card"]
