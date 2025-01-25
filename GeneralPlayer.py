@@ -1,9 +1,5 @@
-
+from bots.base import CountingBot
 class GeneralPlayer(CountingBot):
-
-    def __init__(self):
-        super().__init__("GeneralPlayer")
-
     def declare_action(self, valid_actions, hole_card, round_state):
         # Convert hole cards and community cards to PyPokerEngine format
         community_cards = round_state["community_card"]
