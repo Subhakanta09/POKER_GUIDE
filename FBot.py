@@ -1,8 +1,6 @@
 #cautious bot
+from bots.base import CountingBot
 class FBot(CountingBot):
-    def __init__(self):
-        super().__init__("Fbot")
-
     def declare_action(self, valid_actions, hole_card, round_state):
         current_pot = round_state["pot"]["main"]["amount"]
         if current_pot < 1000:
