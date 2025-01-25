@@ -1,7 +1,6 @@
 # always call bot
+from bots.base import CountingBot
 class CBot(CountingBot):
-    def __init__(self):
-      super().__init__("CBot")
     def declare_action(self, valid_actions, hole_card, round_state):
       action = next(
           action for action in valid_actions if action["action"] == "call")
