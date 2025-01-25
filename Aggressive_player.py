@@ -1,7 +1,6 @@
-
+from bots.base import CountingBot
 class AggressivePlayer(CountingBot):
     def __init__(self):
-        super().__init__("AggressivePlayer")
         self.c = 0 ##c denotes no. of raise actions
         self.s = 1 ## s denotes no. of streets
 
