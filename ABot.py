@@ -1,9 +1,5 @@
-
+from bots.base import CountingBot
 class ABot(CountingBot):
-
-    def __init__(self):
-        super().__init__("ABot")
-
     def declare_action(self, valid_actions, hole_card, round_state):
 
         raise_action = next(
