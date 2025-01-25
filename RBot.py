@@ -1,7 +1,6 @@
 # Random bot
+from bots.base import CountingBot
 class RBot(CountingBot):
-    def __init__(self):
-      super().__init__("Pbot")
     def declare_action(self, valid_actions, hole_card, round_state):
       import random
       rand = random.random()
