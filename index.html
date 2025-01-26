@@ -95,9 +95,10 @@
         <div class="code-section">
             <h2>Sample Bot 1: Random bot</h2>
             <pre><code class="language-python">
-# Random bot
-from bots.base import CountingBot
-class RBot(CountingBot):
+# Random bot randomly chooses moves
+class RandomBot(CountingBot):
+    def __init__(self):
+        super().__init__("RandomBot")
     def declare_action(self, valid_actions, hole_card, round_state):
         import random
         rand = random.random()
@@ -126,9 +127,11 @@ class RBot(CountingBot):
         <div class="code-section">
             <h2>Sample Bot 2: Cautious Bot</h2>
             <pre><code class="language-python">
-#cautious bot
-from bots.base import CountingBot
-class FBot(CountingBot):
+
+class CautiousBot(CountingBot):
+    def __init__(self):
+        super().__init__("CautiousBot")
+
     def declare_action(self, valid_actions, hole_card, round_state):
         current_pot = round_state["pot"]["main"]["amount"]
         if current_pot < 1000:
@@ -153,12 +156,12 @@ class FBot(CountingBot):
 <div class="code-section">
     <h2>Start the Gameplay</h2>
     <pre><code class="language-python">
-    rb = RBot()
-    fb= FBot()
+    rb = RandomBot()
+    csb= CautiousBot()
     # Configure and start the game
     config = setup_config(max_round=3, initial_stack=5000, small_blind_amount=5)
-    config.register_player(name="RBot", algorithm=rb)
-    config.register_player(name="FBot", algorithm=fb)
+    config.register_player(name="RandomBot", algorithm=rb)
+    config.register_player(name="CautiousBot", algorithm=csb)
     game_result = start_poker(config, verbose=1)
         
     </code></pre>
@@ -167,57 +170,43 @@ class FBot(CountingBot):
     <div class="output-section">
     <h2>Output</h2>
     <pre>
-Pbot's hole cards: ['H6', 'HQ']
-Fbot's hole cards: ['SQ', 'C8']
+RandomBot's hole cards: ['H5', 'CQ']
+CautiousBot's hole cards: ['DQ', 'H6']
 Started the round 1
 Street "preflop" started. (community card = [])
-"FBot" declared "call:10"
-"RBot" declared "raise:15"
-"FBot" declared "call:15"
-Street "flop" started. (community card = ['SJ', 'DT', 'HK'])
-"FBot" declared "call:0"
-"RBot" declared "call:0"
-Street "turn" started. (community card = ['SJ', 'DT', 'HK', 'D5'])
-"FBot" declared "call:0"
-"RBot" declared "call:0"
-Street "river" started. (community card = ['SJ', 'DT', 'HK', 'D5', 'C2'])
-"FBot" declared "call:0"
-"RBot" declared "raise:10"
-"FBot" declared "call:10"
-"['FBot']" won the round 1 (stack = {'RBot': 4975, 'FBot': 5025})
-Pbot's hole cards: ['C2', 'SA']
-Fbot's hole cards: ['D3', 'H4']
+"CautiousBot" declared "call:10"
+"RandomBot" declared "raise:15"
+"CautiousBot" declared "call:15"
+Street "flop" started. (community card = ['HJ', 'C8', 'H9'])
+"CautiousBot" declared "call:0"
+"RandomBot" declared "fold:0"
+"['CautiousBot']" won the round 1 (stack = {'RandomBot': 4985, 'CautiousBot': 5015})
+RandomBot's hole cards: ['HQ', 'H4']
+CautiousBot's hole cards: ['SK', 'H2']
 Started the round 2
 Street "preflop" started. (community card = [])
-"RBot" declared "raise:15"
-"FBot" declared "call:15"
-Street "flop" started. (community card = ['D8', 'HA', 'S4'])
-"RBot" declared "call:0"
-"FBot" declared "call:0"
-Street "turn" started. (community card = ['D8', 'HA', 'S4', 'D7'])
-"RBot" declared "call:0"
-"FBot" declared "call:0"
-Street "river" started. (community card = ['D8', 'HA', 'S4', 'D7', 'H2'])
-"RBot" declared "call:0"
-"FBot" declared "call:0"
-"['RBot']" won the round 2 (stack = {'RBot': 4990, 'FBot': 5010})
-Pbot's hole cards: ['DA', 'CA']
-Fbot's hole cards: ['C7', 'C2']
+"RandomBot" declared "call:10"
+"CautiousBot" declared "call:10"
+Street "flop" started. (community card = ['C3', 'SQ', 'C8'])
+"RandomBot" declared "fold:0"
+"['CautiousBot']" won the round 2 (stack = {'RandomBot': 4975, 'CautiousBot': 5025})
+RandomBot's hole cards: ['D9', 'DJ']
+CautiousBot's hole cards: ['SQ', 'DQ']
 Started the round 3
 Street "preflop" started. (community card = [])
-"FBot" declared "call:10"
-"RBot" declared "call:10"
-Street "flop" started. (community card = ['D2', 'D5', 'ST'])
-"FBot" declared "call:0"
-"RBot" declared "call:0"
-Street "turn" started. (community card = ['D2', 'D5', 'ST', 'C6'])
-"FBot" declared "call:0"
-"RBot" declared "call:0"
-Street "river" started. (community card = ['D2', 'D5', 'ST', 'C6', 'CT'])
-"FBot" declared "call:0"
-"RBot" declared "raise:10"
-"FBot" declared "call:10"
-"['RBot']" won the round 3 (stack = {'RBot': 5010, 'FBot': 4990})
+"CautiousBot" declared "call:10"
+"RandomBot" declared "call:10"
+Street "flop" started. (community card = ['DT', 'ST', 'CK'])
+"CautiousBot" declared "call:0"
+"RandomBot" declared "call:0"
+Street "turn" started. (community card = ['DT', 'ST', 'CK', 'H9'])
+"CautiousBot" declared "call:0"
+"RandomBot" declared "raise:10"
+"CautiousBot" declared "call:10"
+Street "river" started. (community card = ['DT', 'ST', 'CK', 'H9', 'H3'])
+"CautiousBot" declared "call:0"
+"RandomBot" declared "call:0"
+"['CautiousBot']" won the round 3 (stack = {'RandomBot': 4955, 'CautiousBot': 5045})
     </pre>
     </div>
 
@@ -225,9 +214,8 @@ Street "river" started. (community card = ['D2', 'D5', 'ST', 'C6', 'CT'])
 <ul>
     <li>Cards are written in the string format. For example <b>HA</b> means <b>Ace of Hearts</b>, <b>CT</b> means <b>Ten of Clubs</b></li>
     <li>Sometimes you might see that the output returns <code>"YourBot" declared "raise:-1"</code>.This error occurs whenever the action is not defined or amount is not defined (remains None). We have fixed this error in our bots. However, when you prepare your own bots you must take extra care of it</li>
-    <li>Hole cards, community cards are stored as strings in list format. Stack     is being stored as dictionary with key-value pairs as 'Bot Name' : Amount.</li>
+    <li>Hole cards, community cards are stored as strings in list format. Stack is being stored as dictionary with key-value pairs as 'Bot Name' : Amount.</li>
 </ul>
-<h3>You can also play with multiple bots. You just need to register them using <code>config.register_player(name="BotName", algorithm=algo)</code>.</h3>
     
 <h2>NOTE</h2>
 <p>You must insert the following code snippet in the declare action portion of your code. This is necessary for tracking the moves played by your bot, which in turn is necessary for generating game replays.</p>
@@ -244,92 +232,96 @@ Street "river" started. (community card = ['D2', 'D5', 'ST', 'C6', 'CT'])
 
 
 <div class="code-section">
-    <h2>Sample Bot 3: Advanced Player</h2>
+    <h2>Sample Bot 3 </h2>
     <pre><code class="language-python">
-from bots.base import CountingBot
+
 class GeneralPlayer(CountingBot):
 
-    def declare_action(self, valid_actions, hole_card, round_state):
-        # Convert hole cards and community cards to PyPokerEngine format
-        community_cards = round_state["community_card"]
-        
-        # Estimate hand strength using win rate estimation
-        num_active_players = self.count_active_players(round_state)
-        win_rate = estimate_hole_card_win_rate(
-            nb_simulation=1000,
-            nb_player=num_active_players,
-            hole_card=gen_cards(hole_card),
-            community_card=gen_cards(community_cards),
-        )
-        
-        # Retrieve pot size and bet amount
-        pot_size = self.get_pot_size(round_state)
-        bet_amount = self.get_bet_amount(valid_actions)
-        
-        if win_rate >= 1/num_active_players:  # If win rate is greater than 50% (since 2 players), raise by average of min and max raise
-            raise_action = next(
-                (a for a in valid_actions if a["action"] == "raise"), None
+def __init__(self):
+super().__init__("GeneralPlayer")
+
+def declare_action(self, valid_actions, hole_card, round_state):
+# Convert hole cards and community cards to PyPokerEngine format
+community_cards = round_state["community_card"]
+
+# Estimate hand strength using win rate estimation
+num_active_players = self.count_active_players(round_state)
+win_rate = estimate_hole_card_win_rate(
+    nb_simulation=1000,
+    nb_player=num_active_players,
+    hole_card=gen_cards(hole_card),
+    community_card=gen_cards(community_cards),
+)
+
+# Retrieve pot size and bet amount
+pot_size = self.get_pot_size(round_state)
+bet_amount = self.get_bet_amount(valid_actions)
+
+if win_rate >= 1/num_active_players:  # If win rate is greater than 50% (since 2 players), raise by average of min and max raise
+    raise_action = next(
+        (a for a in valid_actions if a["action"] == "raise"), None
+    )
+    if raise_action:
+        min_raise = raise_action["amount"]["min"]
+        max_raise = raise_action["amount"]["max"]
+        raise_amount = (min_raise + max_raise) / 2
+        action = {"action": "raise", "amount": raise_amount}
+    else:
+        # No raise option, fallback to call if available
+        action = next(
+            (a for a in valid_actions if a["action"] == "call"), None
+        ) ## no call option even, then fold
+        if not action:
+            action = next(
+                (a for a in valid_actions if a["action"] == "fold"), None
             )
-            if raise_action:
-                min_raise = raise_action["amount"]["min"]
-                max_raise = raise_action["amount"]["max"]
-                raise_amount = (min_raise + max_raise) / 2
-                action = {"action": "raise", "amount": raise_amount}
-            else:
-                # No raise option, fallback to call if available
-                action = next(
-                    (a for a in valid_actions if a["action"] == "call"), None
-                ) ## no call option even, then fold
-                if not action:
-                    action = next(
-                        (a for a in valid_actions if a["action"] == "fold"), None
-                    )
-        
-        else :  # If win rate is less than 1/n where n is no. of players, use fold
-            action = next((a for a in valid_actions if a["action"] == "fold"), None)
-            if not action:
-                action = next((a for a in valid_actions if a["action"] == "fold"), None)
-        
-        
-        # Handle case where no valid action is found
-        if action is None:
-            # If no suitable action is found, default to fold
-            action = {'action': 'fold', 'amount': 0}
-        
-        # Extract amount (handle raise min-max structure)
-        amount = action.get("amount")
-        amount = action.get("amount")
-        if isinstance(amount, dict):
-            amount = amount.get("min", 0)  # Get min raise amount
-            if amount < 0:              # Check if min amount is negative
-                amount = 0              # If negative, set to 0
-        
-        if amount is None or amount < 0:
-            amount = 0  # Default to 0 if amount is invalid or negative
-        
-        self.game_history.append({
-        "round_state": round_state,
-        "valid_actions": valid_actions,
-        "action_taken": (action, amount)
-        })
-        
-        return action["action"], int(amount)
-        
-    def get_pot_size(self, round_state):
-    # Assume pot_size starts at 0
-        pot_size = round_state['pot']['main']['amount']
-        return pot_size
-        
-    def get_bet_amount(self, valid_actions):
-        # Get the current bet amount from valid actions
-        raise_actions = [a for a in valid_actions if a["action"] == "raise"]
-        if raise_actions:
-            return raise_actions[0]['amount']['min']
-        else:
-            return 0
-        
-    def count_active_players(self,round_state):
-        return len(round_state["seats"])
+
+else :  # If win rate is less than 1/n where n is no. of players, use fold
+    action = next((a for a in valid_actions if a["action"] == "fold"), None)
+    if not action:
+        action = next((a for a in valid_actions if a["action"] == "fold"), None)
+
+
+# Handle case where no valid action is found
+if action is None:
+    # If no suitable action is found, default to fold
+    action = {'action': 'fold', 'amount': 0}
+
+# Extract amount (handle raise min-max structure)
+amount = action.get("amount")
+amount = action.get("amount")
+if isinstance(amount, dict):
+    amount = amount.get("min", 0)  # Get min raise amount
+    if amount < 0:              # Check if min amount is negative
+        amount = 0              # If negative, set to 0
+
+if amount is None or amount < 0:
+    amount = 0  # Default to 0 if amount is invalid or negative
+
+self.game_history.append({
+"round_state": round_state,
+"valid_actions": valid_actions,
+"action_taken": (action, amount)
+})
+
+
+return action["action"], int(amount)
+
+def get_pot_size(self, round_state):
+# Assume pot_size starts at 0
+pot_size = round_state['pot']['main']['amount']
+return pot_size
+
+def get_bet_amount(self, valid_actions):
+# Get the current bet amount from valid actions
+raise_actions = [a for a in valid_actions if a["action"] == "raise"]
+if raise_actions:
+    return raise_actions[0]['amount']['min']
+else:
+    return 0
+
+def count_active_players(self,round_state):
+return len(round_state["seats"])
      </code></pre>
 </div>
 <p>In this code we have used <code>nb_simulation</code> to estimate win rate. The nb_simulations parameter in PyPokerEngine 
@@ -341,42 +333,54 @@ game state. A higher number of simulations typically leads to more accurate deci
 <div class="code-section">
 <h2>Start the Gameplay</h2>
 <pre><code class="language-python">
-pb = PBot()
+csb = CautiousBot()
 gp = GeneralPlayer()
-# Configure and start the game
-config = setup_config(max_round=3, initial_stack=5000, small_blind_amount=5)
-config.register_player(name="ABot", algorithm=pb)
-config.register_player(name="gp", algorithm=gp)
+config = setup_config(max_round=5, initial_stack=5000, small_blind_amount=5) ##you can always change the stack or small_blind_amount... its not'fixed
+config.register_player(name="CautiousBot", algorithm=csb)
+config.register_player(name="GeneralPlayer", algorithm=gp)
 game_result = start_poker(config, verbose=1)
-    
 </code></pre>
 </div>
 
 <div class="output-section">
 <h2>Output</h2>
 <pre>
-Pbot's hole cards: ['CT', 'HJ']
-GeneralPlayer's hole cards: ['H7', 'D4']
+CautiousBot's hole cards: ['C7', 'HQ']
+GeneralPlayer's hole cards: ['C4', 'HT']
 Started the round 1
 Street "preflop" started. (community card = [])
-"gp" declared "call:10"
-"PBot" declared "fold:0"
-"['gp']" won the round 1 (stack = {'PBot': 4990, 'gp': 5010})
-Pbot's hole cards: ['HA', 'H6']
-GeneralPlayer's hole cards: ['DJ', 'DK']
+"GeneralPlayer" declared "fold:0"
+"['CautiousBot']" won the round 1 (stack = {'CautiousBot': 5005, 'GeneralPlayer': 4995})
+CautiousBot's hole cards: ['D8', 'D9']
+GeneralPlayer's hole cards: ['S9', 'C9']
 Started the round 2
 Street "preflop" started. (community card = [])
-"PBot" declared "call:10"
-"gp" declared "raise:2512"
-"PBot" declared "fold:0"
-"['gp']" won the round 2 (stack = {'PBot': 4980, 'gp': 5020})
-Pbot's hole cards: ['S3', 'ST']
-GeneralPlayer's hole cards: ['SQ', 'DK']
+"CautiousBot" declared "call:10"
+"GeneralPlayer" declared "raise:2505"
+"CautiousBot" declared "fold:0"
+"['GeneralPlayer']" won the round 2 (stack = {'CautiousBot': 4995, 'GeneralPlayer': 5005})
+CautiousBot's hole cards: ['H5', 'SA']
+GeneralPlayer's hole cards: ['DK', 'H9']
 Started the round 3
 Street "preflop" started. (community card = [])
-"gp" declared "raise:2517"
-"PBot" declared "fold:0"
-"['gp']" won the round 3 (stack = {'PBot': 4970, 'gp': 5030})
+"GeneralPlayer" declared "raise:2510"
+"CautiousBot" declared "fold:0"
+"['GeneralPlayer']" won the round 3 (stack = {'CautiousBot': 4985, 'GeneralPlayer': 5015})
+CautiousBot's hole cards: ['SA', 'DT']
+GeneralPlayer's hole cards: ['D7', 'SK']
+Started the round 4
+Street "preflop" started. (community card = [])
+"CautiousBot" declared "call:10"
+"GeneralPlayer" declared "raise:2515"
+"CautiousBot" declared "fold:0"
+"['GeneralPlayer']" won the round 4 (stack = {'CautiousBot': 4975, 'GeneralPlayer': 5025})
+CautiousBot's hole cards: ['C3', 'D3']
+GeneralPlayer's hole cards: ['CT', 'HA']
+Started the round 5
+Street "preflop" started. (community card = [])
+"GeneralPlayer" declared "raise:2520"
+"CautiousBot" declared "fold:0"
+"['GeneralPlayer']" won the round 5 (stack = {'CautiousBot': 4965, 'GeneralPlayer': 5035})
 </pre>
 </div>
 
@@ -426,13 +430,13 @@ class ABot(CountingBot):
 
     </code></pre>
     </div>
-    <p>If you try playing this against any other basic bot or even <code>GeneralPlayer</code>, you will see that <code>ABot</code> easily wins.
-      However with a little effort, one can easily create an algorithm to win against this <code>ABot</code>.
+    <p>If you try playing this against any other basic bot or even <code>GeneralPlayer</code>, you will see that <code>AggressiveBot</code> easily wins.
+      However with a little effort, one can easily create an algorithm to win against this <code>AggressiveBot</code>.
 
 <div class="code-section">
     <h2>Sample Bot 5: Aggressive Player</h2>
     <pre><code class="language-python">
-from bots.base import CountingBot
+
 class AggressivePlayer(CountingBot):
     def __init__(self):
         super().__init__("AggressivePlayer")
@@ -471,7 +475,6 @@ class AggressivePlayer(CountingBot):
         round_count = round_state["round_count"]
 
         # Access the ABot instance correctly
-        global ab  # Access the globally defined ab object
         self.c, self.s = self.check_bluffing(ab, round_count)
 
         # Act aggressively in the upcoming round if the condition is met
@@ -502,126 +505,240 @@ It calculates the ratio c/s, representing the opponent's raise frequency.
 <div class="code-section">
     <h2>Start the Gameplay</h2>
     <pre><code class="language-python">
-    ab = ABot()
-    ap= AggressivePlayer()
-    # Configure and start the game
-    config = setup_config(max_round=10,initial_stack=5000, small_blind_amount=5)
-    config.register_player(name="ABot", algorithm=ab
-    config.register_player(name="ap", algorithm=ap)
+    ap = AggressivePlayer()
+    ab = AggressiveBot()
+    config = setup_config(max_round=7, initial_stack=5000, small_blind_amount=5) ##you can always change the stack or small_blind_amount... its not'fixed
+    config.register_player(name="AggressiveBot", algorithm=ab)
+    config.register_player(name="AggressivePlayer", algorithm=ap)
     game_result = start_poker(config, verbose=1)
-        
+            
     </code></pre>
  </div>
  <div class="output-section">
     <h2>Output</h2>
     <pre>
-ABot's hole cards: ['C3', 'S5']
-AggressivePlayer's hole cards: ['HQ', 'DJ']
+AggressiveBot's hole cards: ['CJ', 'DQ']
+AggressivePlayer's hole cards: ['CA', 'D8']
 Started the round 1
 Street "preflop" started. (community card = [])
-"ap" declared "raise:2507"
-"ABot" declared "raise:0"
-"['ap']" won the round 1 (stack = {'ABot': 4990, 'ap': 5010})
-ABot's hole cards: ['HQ', 'S2']
-AggressivePlayer's hole cards: ['HT', 'SK']
+"AggressivePlayer" declared "raise:2507"
+"AggressiveBot" declared "raise:0"
+"['AggressivePlayer']" won the round 1 (stack = {'AggressiveBot': 4990, 'AggressivePlayer': 5010})
+AggressiveBot's hole cards: ['H9', 'H6']
+AggressivePlayer's hole cards: ['S6', 'C8']
 Started the round 2
 Street "preflop" started. (community card = [])
-"ABot" declared "raise:2502"
-"ap" declared "raise:5002"
-"ABot" declared "raise:0"
-"['ap']" won the round 2 (stack = {'ABot': 2488, 'ap': 7512})
-ABot's hole cards: ['HA', 'CK']
-AggressivePlayer's hole cards: ['SK', 'C5']
+"AggressiveBot" declared "raise:2502"
+"AggressivePlayer" declared "fold:0"
+"['AggressiveBot']" won the round 2 (stack = {'AggressiveBot': 5000, 'AggressivePlayer': 5000})
+AggressiveBot's hole cards: ['DA', 'SA']
+AggressivePlayer's hole cards: ['S8', 'CA']
 Started the round 3
 Street "preflop" started. (community card = [])
-"ap" declared "raise:3763"
-"ABot" declared "raise:0"
-"['ap']" won the round 3 (stack = {'ABot': 2478, 'ap': 7522})
-ABot's hole cards: ['C7', 'C3']
-AggressivePlayer's hole cards: ['S9', 'C6']
+"AggressivePlayer" declared "raise:2507"
+"AggressiveBot" declared "raise:0"
+"['AggressivePlayer']" won the round 3 (stack = {'AggressiveBot': 4990, 'AggressivePlayer': 5010})
+AggressiveBot's hole cards: ['HJ', 'SK']
+AggressivePlayer's hole cards: ['H7', 'S4']
 Started the round 4
 Street "preflop" started. (community card = [])
-"ABot" declared "raise:1246"
+"AggressiveBot" declared "raise:2502"
 
     PLAYING AGGRESSIVELY 
 
-"ap" declared "raise:5002"
-"ABot" declared "raise:0"
-"['ap']" won the round 4 (stack = {'ABot': 1232, 'ap': 8768})
-ABot's hole cards: ['H7', 'CQ']
-AggressivePlayer's hole cards: ['ST', 'C7']
+"AggressivePlayer" declared "raise:5002"
+"AggressiveBot" declared "raise:0"
+"['AggressivePlayer']" won the round 4 (stack = {'AggressiveBot': 2488, 'AggressivePlayer': 7512})
+AggressiveBot's hole cards: ['C6', 'SQ']
+AggressivePlayer's hole cards: ['S9', 'SA']
 Started the round 5
 Street "preflop" started. (community card = [])
 
     PLAYING AGGRESSIVELY 
 
-"ap" declared "raise:4391"
-"ABot" declared "raise:0"
-"['ap']" won the round 5 (stack = {'ABot': 1222, 'ap': 8778})
-ABot's hole cards: ['SJ', 'S8']
-AggressivePlayer's hole cards: ['C9', 'D9']
+"AggressivePlayer" declared "raise:3763"
+"AggressiveBot" declared "raise:0"
+"['AggressivePlayer']" won the round 5 (stack = {'AggressiveBot': 2478, 'AggressivePlayer': 7522})
+AggressiveBot's hole cards: ['SQ', 'HJ']
+AggressivePlayer's hole cards: ['D2', 'C5']
 Started the round 6
 Street "preflop" started. (community card = [])
-"ABot" declared "raise:618"
+"AggressiveBot" declared "raise:1246"
 
     PLAYING AGGRESSIVELY 
 
-"ap" declared "raise:5002"
-"ABot" declared "raise:0"
-"['ap']" won the round 6 (stack = {'ABot': 604, 'ap': 9396})
-ABot's hole cards: ['H5', 'D5']
-AggressivePlayer's hole cards: ['D3', 'DT']
+"AggressivePlayer" declared "raise:5002"
+"AggressiveBot" declared "raise:0"
+"['AggressivePlayer']" won the round 6 (stack = {'AggressiveBot': 1232, 'AggressivePlayer': 8768})
+AggressiveBot's hole cards: ['D9', 'SQ']
+AggressivePlayer's hole cards: ['S2', 'HQ']
 Started the round 7
 Street "preflop" started. (community card = [])
 
     PLAYING AGGRESSIVELY 
 
-"ap" declared "raise:4705"
-"ABot" declared "raise:0"
-"['ap']" won the round 7 (stack = {'ABot': 594, 'ap': 9406})
-ABot's hole cards: ['H9', 'HA']
-AggressivePlayer's hole cards: ['C7', 'SK']
-Started the round 8
-Street "preflop" started. (community card = [])
-"ABot" declared "raise:304"
-
-    PLAYING AGGRESSIVELY 
-
-"ap" declared "raise:5002"
-"ABot" declared "raise:0"
-"['ap']" won the round 8 (stack = {'ABot': 290, 'ap': 9710})
-ABot's hole cards: ['S3', 'C5']
-AggressivePlayer's hole cards: ['SK', 'D6']
-Started the round 9
-Street "preflop" started. (community card = [])
-
-    PLAYING AGGRESSIVELY 
-
-"ap" declared "raise:4862"
-"ABot" declared "raise:0"
-"['ap']" won the round 9 (stack = {'ABot': 280, 'ap': 9720})
-ABot's hole cards: ['D5', 'C8']
-AggressivePlayer's hole cards: ['HT', 'S8']
-Started the round 10
-Street "preflop" started. (community card = [])
-"ABot" declared "raise:147"
-
-    PLAYING AGGRESSIVELY 
-
-"ap" declared "raise:5002"
-"ABot" declared "raise:0"
-"['ap']" won the round 10 (stack = {'ABot': 133, 'ap': 9867})
-    </pre>
+"AggressivePlayer" declared "raise:4391"
+"AggressiveBot" declared "raise:0"
+"['AggressivePlayer']" won the round 7 (stack = {'AggressiveBot': 1222, 'AggressivePlayer': 8778}) </pre>
     </div>
 <p>
-    Whenever it prints PLAYING AGGRESSIVELY , it means <code>ap</code> has detected bluffing.Then it acts accordingly. You can clearly see our <code>AggressivePlayer</code> wins easily.
+    Whenever it prints PLAYING AGGRESSIVELY , it means <code>AggressivePlayer</code> has detected bluffing.Then it acts accordingly. You can see our <code>AggressivePlayer</code> wins easily.
 <br>
-<h3>
- So instead of going all-in and playing aggressively, we encourage you to find/design algorithms to play Poker. The best bot can be created only by a combination of game theory, statistics and machine learning !!!
-</h3>
+ So instead of going all-in and playing aggressively, we encourage you to find/design algorithms to play Poker in an optimal manner. 
+ <br>Now let's see an example of a slightly advanced bot.
+ <div class="code-section">
+    <h2>StrategicBot</h2>
+    <pre><code class="language-python">
+from pypokerengine.utils.card_utils import Card
+class StrategicBot(CountingBot):
+    def __init__(self):
+        super().__init__("StrategicBot")
+
+    def declare_action(self, valid_actions, hole_card, round_state):
+        # Get community cards
+        community_cards = round_state["community_card"]
+
+        # Evaluate hand strength based on hand ranking
+        hand_strength = self.evaluate_hand_strength(hole_card, community_cards)
+
+        # Get pot size and bet amount
+        pot_size = round_state["pot"]["main"]["amount"]
+        bet_amount = self.get_bet_amount(valid_actions)
+
+        # Decision logic based on hand strength and pot odds
+        if hand_strength >= 0.8:  # Strong hand
+            action = self.aggressive_action(valid_actions, pot_size, bet_amount)
+        elif hand_strength >= 0.5:  # Moderate hand
+            action = self.balanced_action(valid_actions, pot_size, bet_amount)
+        else:  # Weak hand
+            action = self.conservative_action(valid_actions, pot_size, bet_amount)
+
+        # Extract amount (handle raise min-max structure)
+        amount = action.get("amount")
+        if isinstance(amount, dict):
+            amount = amount.get("min", 0)  # Get min raise amount
+
+        if amount is None or amount < 0:
+            amount = 0  # Default to 0 if amount is invalid or negative
+
+
+        # Record game history
+        self.game_history.append({
+            "round_state": round_state,
+            "valid_actions": valid_actions,
+            "action_taken": (action, amount)
+        })
+
+        return action["action"], int(amount)
+
+
+    def evaluate_hand_strength(self, hole_card, community_cards):
+        # Simple hand evaluation based on card ranks
+        hand_ranks = [Card.from_str(card).rank for card in hole_card + community_cards]
+        hand_strength = sum(hand_ranks) / (len(hole_card) + len(community_cards))
+        return hand_strength
+
+    def aggressive_action(self, valid_actions, pot_size, bet_amount):
+        # Raise if possible, otherwise call
+        raise_action = next((a for a in valid_actions if a["action"] == "raise"), None)
+        if raise_action:
+            return raise_action
+        else:
+            return next((a for a in valid_actions if a["action"] == "call"), None)
+
+
+    def balanced_action(self, valid_actions, pot_size, bet_amount):
+        # Call if bet is reasonable, otherwise fold
+        call_action = next((a for a in valid_actions if a["action"] == "call"), None)
+        if call_action and bet_amount <= pot_size / 2:
+            return call_action
+        else:
+            return next((a for a in valid_actions if a["action"] == "fold"), None)
+
+
+    def conservative_action(self, valid_actions, pot_size, bet_amount):
+        # Fold if bet is significant, otherwise call
+        call_action = next((a for a in valid_actions if a["action"] == "call"), None)
+        if call_action and bet_amount <= pot_size / 4:
+            return call_action
+        else:
+            return next((a for a in valid_actions if a["action"] == "fold"), None)
+
+
+    def get_bet_amount(self, valid_actions):
+        # Get the current bet amount from valid actions
+        raise_actions = [a for a in valid_actions if a["action"] == "raise"]
+        if raise_actions:
+            return raise_actions[0]['amount']['min']
+        else:
+            return 0
+            
+    </code></pre>
+ </div>
+ <p>The main part of this bot is the fucntion <code>evaluate_hand_strength</code>. This function aims to provide a basic estimate of the strength of a player's hand, given their hole cards and the community cards on the table. It's a simplified evaluation, primarily used to guide the bot's decision-making process.
+    <br>How it Works:<br>
+    <ul>   
+    <li>Card Ranks: The function first extracts the ranks of all cards in the hand (hole cards + community cards). PyPokerEngine's Card.from_str(card).rank is used to convert card strings into numerical rank values (e.g., Ace = 14, King = 13, etc.).</li>
+    <li> Summing Ranks: The ranks of all cards in the hand are added together.</li>
+    <li>Average Rank: The total sum of ranks is divided by the total number of cards to calculate an average rank for the hand.</li>
+    <li>Hand Strength: This average rank is then used as a proxy for hand strength. A higher average rank suggests a stronger hand.</li>
+    <br>
+    It's important to note that this evaluation method is a simplification. It doesn't consider the suits of the cards or potential hand combinations (like flushes or straights). It purely focuses on the raw rank values of the cards.
+    <div class="code-section">
+        <h2>Start the Gameplay</h2>
+        <pre><code class="language-python">
+sb = StrategicBot()
+gp = GeneralPlayer()
+config = setup_config(max_round=5, initial_stack=5000, small_blind_amount=5) ##you can always change the stack or small_blind_amount... its not'fixed
+config.register_player(name="StrategicBot", algorithm=sb)
+config.register_player(name="GeneralPlayer", algorithm=gp)
+game_result = start_poker(config, verbose=1)
+        </code></pre>
+     </div>
+     <div class="output-section">
+        <h2>Output</h2>
+        <pre>
+    StrategicBot's hole cards: ['C9', 'HT']
+GeneralPlayer's hole cards: ['D2', 'S3']
+Started the round 1
+Street "preflop" started. (community card = [])
+"GeneralPlayer" declared "fold:0"
+"['StrategicBot']" won the round 1 (stack = {'StrategicBot': 5005, 'GeneralPlayer': 4995})
+StrategicBot's hole cards: ['CQ', 'D4']
+GeneralPlayer's hole cards: ['D2', 'S5']
+Started the round 2
+Street "preflop" started. (community card = [])
+"StrategicBot" declared "raise:15"
+"GeneralPlayer" declared "fold:0"
+"['StrategicBot']" won the round 2 (stack = {'StrategicBot': 5015, 'GeneralPlayer': 4985})
+StrategicBot's hole cards: ['C2', 'ST']
+GeneralPlayer's hole cards: ['H4', 'H3']
+Started the round 3
+Street "preflop" started. (community card = [])
+"GeneralPlayer" declared "fold:0"
+"['StrategicBot']" won the round 3 (stack = {'StrategicBot': 5020, 'GeneralPlayer': 4980})
+StrategicBot's hole cards: ['H5', 'S5']
+GeneralPlayer's hole cards: ['H2', 'S7']
+Started the round 4
+Street "preflop" started. (community card = [])
+"StrategicBot" declared "raise:15"
+"GeneralPlayer" declared "fold:0"
+"['StrategicBot']" won the round 4 (stack = {'StrategicBot': 5030, 'GeneralPlayer': 4970})
+StrategicBot's hole cards: ['S2', 'D2']
+GeneralPlayer's hole cards: ['HJ', 'HK']
+Started the round 5
+Street "preflop" started. (community card = [])
+"GeneralPlayer" declared "raise:2492"
+"StrategicBot" declared "raise:4974"
+"GeneralPlayer" declared "raise:0"
+"['StrategicBot']" won the round 5 (stack = {'StrategicBot': 7522, 'GeneralPlayer': 2478})
+</pre>
+        </div>
+
+ <br>The best bot can be created only by a combination of game theory, statistics and machine learning !!!
+
 </p>
 
-<h3>For further reference you can see our GitHub Repos. There you can find the code behind <code>CountingBot</code> and few other examples too.</h3>
     <script>hljs.highlightAll();</script>
 </body>
 </html>
