@@ -213,10 +213,24 @@ Street "river" started. (community card = ['DT', 'ST', 'CK', 'H9', 'H3'])
 <p> A few things to note from the output:</p>
 <ul>
     <li>Cards are written in the string format. For example <b>HA</b> means <b>Ace of Hearts</b>, <b>CT</b> means <b>Ten of Clubs</b></li>
-    <li>Sometimes you might see that the output returns <code>"YourBot" declared "raise:-1"</code>.This error occurs whenever the action is not defined or amount is not defined (remains None). We have fixed this error in our bots. However, when you prepare your own bots you must take extra care of it</li>
     <li>Hole cards, community cards are stored as strings in list format. Stack is being stored as dictionary with key-value pairs as 'Bot Name' : Amount.</li>
-</ul>
-    
+    <li>Sometimes you might see that the output returns <code>"YourBot" declared "raise:-1"</code>. This indicates that either your bot is going all-in. 
+        This usually occurs when a player's remaining stack (chips) is not enough to cover the minimum raise amount required for the current round. When you encounter min_raise or max_raise as -1 in your code, it's important to interpret it as an all-in situation and handle it differently.
+        In all our samples we have written the code so as to handle this by setting <code>action,amount </code> to <code> fold, 0</code> respectively.
+        However the ideal way to handle this is : </ul>
+        <div class="code-section">
+        <pre><code class="language-python">
+    if raise_action:
+        min_raise = raise_action["amount"]["min"]
+        max_raise = raise_action["amount"]["max"]
+    if min_raise == -1 and max_raise == -1:  # All-in case
+        raise_amount = round_state['seats'][round_state['next_player']]['stack'] # Get remaining stack
+    else:
+        raise_amount = (min_raise + max_raise) / 2
+    action = {"action": "raise", "amount": raise_amount}
+        </code></pre>
+    </div>   
+            
 <h2>NOTE</h2>
 <p>You must insert the following code snippet in the declare action portion of your code. This is necessary for tracking the moves played by your bot, which in turn is necessary for generating game replays.</p>
 <div class="code-section">
