@@ -585,7 +585,7 @@ Street "preflop" started. (community card = [])
     Whenever it prints PLAYING AGGRESSIVELY , it means <code>AggressivePlayer</code> has detected bluffing.Then it acts accordingly. You can see our <code>AggressivePlayer</code> wins easily.
 <br>
  So instead of going all-in and playing aggressively, we encourage you to find/design algorithms to play Poker in an optimal manner. 
- <br><h6></h6>Now let's see an example of a slightly advanced bot.</h6>
+ <br><h6>Now let's see an example of a slightly advanced bot.</h6> </p>
  <div class="code-section">
     <h2>StrategicBot</h2>
     <pre><code class="language-python">
@@ -606,9 +606,9 @@ class StrategicBot(CountingBot):
         bet_amount = self.get_bet_amount(valid_actions)
 
         # Decision logic based on hand strength and pot odds
-        if hand_strength >= 0.8:  # Strong hand
+        if hand_strength >= 8:  # Strong hand
             action = self.aggressive_action(valid_actions, pot_size, bet_amount)
-        elif hand_strength >= 0.5:  # Moderate hand
+        elif hand_strength >= 5:  # Moderate hand
             action = self.balanced_action(valid_actions, pot_size, bet_amount)
         else:  # Weak hand
             action = self.conservative_action(valid_actions, pot_size, bet_amount)
@@ -682,8 +682,10 @@ class StrategicBot(CountingBot):
     <li> Summing Ranks: The ranks of all cards in the hand are added together.</li>
     <li>Average Rank: The total sum of ranks is divided by the total number of cards to calculate an average rank for the hand.</li>
     <li>Hand Strength: This average rank is then used as a proxy for hand strength. A higher average rank suggests a stronger hand.</li>
+    </ul>
     <br>
     It's important to note that this evaluation method is a simplification. It doesn't consider the suits of the cards or potential hand combinations (like flushes or straights). It purely focuses on the raw rank values of the cards.
+        </p>
     <div class="code-section">
         <h2>Start the Gameplay</h2>
         <pre><code class="language-python">
